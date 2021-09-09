@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +20,7 @@ public class ICAPClient {
 	
 	private String host;
 	private int port = 0;
+	private List<String> additionalHeaders = new ArrayList<>();
 	
 	private static final String VERSION = "1.0";
 	private static final String USER_AGENT = "Java-ICAP-Client/1.1";
@@ -44,6 +46,22 @@ public class ICAPClient {
 	public static String getICAPVersion() {
 		return VERSION;
 	}
+
+	public void appendAdditionalHeaders(String headerLine) {
+		additionalHeaders.add(headerLine);
+	}
+
+	public void clearAdditionalHeaders() {
+		additionalHeaders.clear();
+	}
+
+	private String getAdditionalHeaders() {
+		final StringBuffer buffer = new StringBuffer();
+		for(String headerLine: additionalHeaders) {
+			buffer.append(headerLine).append(END_LINE_DELIMITER);
+		}
+		return buffer.toString();
+	}
 	
 	public ICAPResponse options(String icapService) throws ICAPException {
 		
@@ -67,6 +85,7 @@ public class ICAPClient {
               + "Host: "+host+END_LINE_DELIMITER
               + "User-Agent: "+USER_AGENT+END_LINE_DELIMITER
               + "Encapsulated: null-body=0"+END_LINE_DELIMITER
+              + getAdditionalHeaders()
               + END_LINE_DELIMITER;
         
         info("\n### (SEND) ICAP REQUEST ###\n"+requestHeader);
@@ -162,6 +181,7 @@ public class ICAPClient {
               + "Allow: 204"+END_LINE_DELIMITER
               + (preview >= 0 ? ("Preview: "+preview+END_LINE_DELIMITER):"")
               + "Encapsulated: "+encapsulated.toString()+END_LINE_DELIMITER
+              + getAdditionalHeaders()
               + END_LINE_DELIMITER;
         
         info("\n### (SEND) ICAP REQUEST ###\n"+icapRequestHeader);
