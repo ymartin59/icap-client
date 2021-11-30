@@ -178,10 +178,10 @@ public class ICAPClient {
         		request.getMode().name()+" icap://"+host+"/"+request.getService()+" ICAP/"+VERSION+END_LINE_DELIMITER
               + "Host: "+host+END_LINE_DELIMITER
               + "User-Agent: "+USER_AGENT+END_LINE_DELIMITER
+              + getAdditionalHeaders()
               + "Allow: 204"+END_LINE_DELIMITER
               + (preview >= 0 ? ("Preview: "+preview+END_LINE_DELIMITER):"")
               + "Encapsulated: "+encapsulated.toString()+END_LINE_DELIMITER
-              + getAdditionalHeaders()
               + END_LINE_DELIMITER;
         
         info("\n### (SEND) ICAP REQUEST ###\n"+icapRequestHeader);

@@ -6,7 +6,7 @@
 	
 	<groupId>net.rfc3507</groupId>
 	<artifactId>icap-client</artifactId>
-	<version>1.0.1</version>
+	<version>1.0.3</version>
 	
 	<name>icap-client</name>
 	<description>ICAP Client Implementation for RFC 3507</description>
